@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عداد ذكرياتنا ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            width: 100%;
+            height: 100vh;
+            background-color: #ffb6c1;
+            font-family: 'Almarai', sans-serif;
+            text-align: center;
+            color: #ffffff;
+            overflow: hidden;
+        }
+        .container {
+            background: #ffb6c1;
+            padding: 15px;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        h1 {
+            font-size: 20px;
+            margin-bottom: 5px;
+            color: #000000;
+            font-weight: 700;
+        }
+        .heart {
+            font-size: 35px;
+            margin: 5px 0;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        p {
+            color: #000000;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .counter-box {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+            background: #ffa6b5;
+            padding: 10px;
+            border-radius: 14px;
+            border: 1px solid #ff8093;
+        }
+        .time-unit span {
+            display: block;
+            font-size: 18px;
+            font-weight: 800;
+            color: #000000;
+        }
+        .time-unit label {
+            font-size: 11px;
+            color: #222222;
+            font-weight: 700;
+        }
+        .settings-box {
+            margin-top: 10px;
+            padding-top: 5px;
+            border-top: 1px dashed #ff8093;
+        }
+        input[type="date"], input[type="text"], input[type="file"], textarea {
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid #ff8093;
+            background: #fff0f3;
+            font-family: 'Almarai', sans-serif;
+            color: #000000;
+            outline: none;
+            font-weight: 700;
+            width: 100%;
+            margin-bottom: 6px;
+        }
+        textarea {
+            resize: none;
+            height: 250px; /* مساحة واسعة وكبيرة للكتابة في الأمنيات */
+        }
+        button {
+            background-color: #000000;
+            color: #ffffff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Almarai', sans-serif;
+            font-weight: 700;
+        }
+        button:hover {
+            background-color: #333333;
+        }
+        .nav-buttons {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .nav-btn {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+        }
+        .page {
+            display: none !important;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            flex-grow: 1;
+        }
+        .page.active {
+            display: flex !important;
+        }
+        .slide-card {
+            background: #fff0f3;
+            border-radius: 14px;
+            padding: 8px;
+            border: 1px solid #ff8093;
+            margin-top: 5px;
+        }
+        .slide-card img {
+            width: 100%;
+            height: 380px; /* ارتفاع كبير لتأخذ الصورة حيز واسع من الشاشة */
+            border-radius: 10px;
+            object-fit: cover;
+            margin-bottom: 5px;
+        }
+        .slider-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px 0;
+        }
+        .delete-btn {
+            background-color: #d9534f !important;
+            font-size: 11px;
+            padding: 4px 8px;
+            width: 100%;
+        }
+        .back-btn {
+            background-color: #000000;
+            color: white;
+            margin-top: 5px;
+            width: 100%;
+            padding: 8px;
+            border-radius: 10px;
+        }
+        .chat-box {
+            background: #fff0f3;
+            border: 1px solid #ff8093;
+            border-radius: 12px;
+            height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            text-align: right;
+            margin-bottom: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .chat-msg {
+            background: #ffffff;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            word-break: break-word;
+        }
+        .msg-del-btn {
+            background: #d9534f;
+            color: white;
+            border: none;
+            padding: 2px 6px;
+            border-radius: 5px;
+            font-size: 10px;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+        #auth-screen {
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- شاشة إدخال كود الربط السري واسم المستخدم -->
+        <div id="auth-screen" class="page active">
+            <div>
+                <h1>ربط التطبيق الآمن 🔒</h1>
+                <p style="font-size: 12px; margin-bottom: 10px;">هذه الغرفة مخصصة لشخصين فقط:</p>
+                <input type="text" id="userNameInput" placeholder="اسمك (مثلاً: أحمد / مريم)" style="text-align: center;">
+                <input type="text" id="roomCodeInput" placeholder="الكود السري المشترك" style="text-align: center;">
+                <button onclick="connectRoom()" style="width: 100%; margin-top: 8px; padding: 10px;">دخول الغرفة الخاصة ✨</button>
+            </div>
+            <div></div>
+        </div>
+
+        <!-- الشاشة الأولى: العداد الرئيسي -->
+        <div id="home-page" class="page">
+            <div>
+                <h1>مع بعض في كل خطوة ❤️</h1>
+                <div class="heart">❤️</div>
+                <p>بدأنا حكايتنا من تاريخ: <br><b id="date-display" style="direction: ltr; display: inline-block; color: #000000;">2025-01-01</b></p>
+                
+                <div class="counter-box">
+                    <div class="time-unit"><span id="days">0</span><label>يوم</label></div>
+                    <div class="time-unit"><span id="hours">0</span><label>ساعة</label></div>
+                    <div class="time-unit"><span id="minutes">0</span><label>دقيقة</label></div>
+                    <div class="time-unit"><span id="seconds">0</span><label>ثانية</label></div>
+                </div>
+
+                <div class="settings-box">
+                    <label style="font-size: 11px; display: block; margin-bottom: 3px; color: #000000;">اختر تاريخ البداية:</label>
+                    <input type="date" id="startDateInput">
+                    <button onclick="saveDate()">حفظ التاريخ</button>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="switchPage('gallery-page')">ألبوم الصور 📸</button>
+                <button class="nav-btn" onclick="switchPage('chat-page')">محادثة العشاق 💬</button>
+                <button class="nav-btn" onclick="switchPage('wishes-page')">قائمة الأمنيات 📝</button>
+            </div>
+        </div>
+
+        <!-- الشاشة الثانية: ألبوم الصور -->
+        <div id="gallery-page" class="page">
+            <div>
+                <h1>ألبوم الذكريات 📸</h1>
+                <div class="slide-card">
+                    <img id="slide-image" src="" alt="صورة الذكرى">
+                    <p id="slide-text" style="font-size: 12px; margin: 3px 0;">جاري تحميل الذكريات... ✨</p>
+                    <div class="slider-buttons">
+                        <button onclick="prevSlide()" style="padding: 4px 8px; font-size: 11px;">السابق</button>
+                        <span id="slide-counter" style="color: #000; font-size: 11px; font-weight: bold;">0 / 0</span>
+                        <button onclick="nextSlide()" style="padding: 4px 8px; font-size: 11px;">التالي</button>
+                    </div>
+                    <button class="delete-btn" onclick="deleteCurrentMemory()">حذف هذه الصورة 🗑️</button>
+                </div>
+
+                <div class="settings-box">
+                    <input type="file" id="imageInput" accept="image/*">
+                    <input type="text" id="captionInput" placeholder="اكتب جملة للذكرى...">
+                    <button onclick="addNewMemory()" style="width: 100%;">إضافة للألبوم</button>
+                </div>
+            </div>
+
+            <button class="back-btn" onclick="switchPage('home-page')">الرجوع للرئيسية 🏠</button>
+        </div>
+
+        <!-- الشاشة الرابعة: شاشة الشات الآمن -->
+        <div id="chat-page" class="page">
+            <div>
+                <h1>محادثة العشاق 💬</h1>
+                <div class="chat-box" id="chatContainer">
+                    <div class="chat-msg"><span>أهلاً بكم في دردشة ذكرياتكم ❤️</span></div>
+                </div>
+                <input type="text" id="chatMessageInput" placeholder="اكتب رسالة..." style="margin-bottom: 4px;">
+                <div style="display: flex; gap: 5px;">
+                    <button onclick="sendChatMessage()" style="flex: 2;">إرسال 🚀</button>
+                    <button onclick="clearAllChat()" style="flex: 1; background-color: #d9534f;">مسح الكل 🗑️</button>
+                </div>
+            </div>
+
+            <button class="back-btn" onclick="switchPage('home-page')">الرجوع للرئيسية 🏠</button>
+        </div>
+
+        <!-- الشاشة الثالثة: قائمة الأمنيات -->
+        <div id="wishes-page" class="page">
+            <div>
+                <h1>قائمة الأمنيات 📝</h1>
+                <textarea id="wishNoteInput" placeholder="اكتب هنا كل اللي في بالك..."></textarea>
+                <button onclick="saveWishNote()" style="width: 100%; margin-top: 10px;">حفظ القائمة 💾</button>
+            </div>
+
+            <button class="back-btn" onclick="switchPage('home-page')">الرجوع للرئيسية 🏠</button>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDbzZ37lFWDTU8cADaltjaK9SnCkguHqr4",
+            authDomain: "loveapp-f3848.firebaseapp.com",
+            projectId: "loveapp-f3848",
+            storageBucket: "loveapp-f3848.firebasestorage.app",
+            messagingSenderId: "585541103196",
+            appId: "1:585541103196:web:5d1b3724b6a0c6f89e4099",
+            measurementId: "G-CDWLKQHWFJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let currentRoom = "";
+        let currentUserName = "";
+        let unsubscribers = [];
+        let activeStartDate = "2025-01-01";
+        let memories = [];
+        let currentIndex = 0;
+        let chatMessages = [];
+
+        window.switchPage = function(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        window.connectRoom = async function() {
+            const nameInput = document.getElementById("userNameInput").value.trim();
+            const codeInput = document.getElementById("roomCodeInput").value.trim();
+            
+            if (!nameInput || !codeInput) {
+                alert("من فضلك اكتب اسمك والكود السري!");
+                return;
+            }
+
+            const roomRef = doc(db, "rooms", codeInput);
+            const roomSnap = await getDoc(roomRef);
+
+            let existingMembers = [];
+            if (roomSnap.exists() && roomSnap.data().members) {
+                existingMembers = roomSnap.data().members;
+            }
+
+            if (!existingMembers.includes(nameInput)) {
+                if (existingMembers.length >= 2) {
+                    alert("عذراً، هذه الغرفة ممتلئة بالفعل ولن يمكن لأكثر من شخصين الدخول إليها! 🔒");
+                    return;
+                }
+                existingMembers.push(nameInput);
+                await setDoc(roomRef, { members: existingMembers }, { merge: true });
+            }
+
+            currentRoom = codeInput;
+            currentUserName = nameInput;
+            
+            unsubscribers.forEach(unsub => unsub());
+            unsubscribers = [];
+            switchPage('home-page');
+            initListeners();
+        }
+
+        function initListeners() {
+            const unsub1 = onSnapshot(doc(db, "rooms", currentRoom), (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.startDate) {
+                        activeStartDate = data.startDate;
+                        document.getElementById("startDateInput").value = activeStartDate;
+                        document.getElementById("date-display").innerText = activeStartDate;
+                        updateTimer(); // تحديث العداد مباشرة عند استقبال البيانات المحدثة
+                    }
+                    if (data.memories) {
+                        memories = data.memories;
+                        if (currentIndex >= memories.length) currentIndex = Math.max(0, memories.length - 1);
+                        showSlide(currentIndex);
+                    }
+                    if (data.wishes !== undefined && document.activeElement !== wishNoteInput) {
+                        wishNoteInput.value = data.wishes;
+                    }
+                    if (data.chats) {
+                        chatMessages = data.chats;
+                        renderChat();
+                    }
+                }
+            });
+            unsubscribers.push(unsub1);
+
+            window.updateRoomData = async function(newData) {
+                try {
+                    await setDoc(doc(db, "rooms", currentRoom), newData, { merge: true });
+                } catch (e) {
+                    console.error("خطأ في الحفظ:", e);
+                }
+            }
+        }
+
+        window.saveDate = async function() {
+            const inputVal = document.getElementById("startDateInput").value;
+            if (inputVal && currentRoom) {
+                await updateRoomData({ startDate: inputVal });
+                activeStartDate = inputVal;
+                document.getElementById("date-display").innerText = inputVal;
+                updateTimer(); // تحديث العداد والأرقام فوراً بعد الضغط على حفظ
+                alert("تم تحديث التاريخ بنجاح! ✨");
+            }
+        }
+
+        function updateTimer() {
+            const startDate = new Date(activeStartDate + "T00:00:00");
+            const now = new Date();
+            const diff = now - startDate;
+            if (diff < 0) return;
+            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            document.getElementById("minutes").innerText = Math.floor((diff / 1000 / 60) % 60);
+            document.getElementById("seconds").innerText = Math.floor((diff / 1000) % 60);
+        }
+        setInterval(updateTimer, 1000);
+
+        function showSlide(index) {
+            const imgElement = document.getElementById("slide-image");
+            const textElement = document.getElementById("slide-text");
+            const counterElement = document.getElementById("slide-counter");
+            const deleteBtn = document.querySelector(".delete-btn");
+
+            if (!memories || memories.length === 0) {
+                imgElement.style.display = "none";
+                textElement.innerText = "لا توجد صور مضافة بعد! ✨";
+                counterElement.innerText = "0 / 0";
+                deleteBtn.style.display = "none";
+                return;
+            }
+            imgElement.style.display = "block";
+            deleteBtn.style.display = "block";
+            imgElement.src = memories[index].img;
+            textElement.innerText = memories[index].text;
+            counterElement.innerText = `${index + 1} / ${memories.length}`;
+        }
+
+        window.nextSlide = function() {
+            if (memories.length === 0) return;
+            currentIndex = (currentIndex + 1) % memories.length;
+            showSlide(currentIndex);
+        }
+
+        window.prevSlide = function() {
+            if (memories.length === 0) return;
+            currentIndex = (currentIndex - 1 + memories.length) % memories.length;
+            showSlide(currentIndex);
+        }
+
+        function compressImage(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 900;
+                    const MAX_HEIGHT = 900;
+                    let width = img.width, height = img.height;
+                    if (width > height) {
+                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                    } else {
+                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                    }
+                    canvas.width = width; canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    callback(canvas.toDataURL('image/jpeg', 0.7));
+                }
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        window.addNewMemory = function() {
+            const fileInput = document.getElementById("imageInput");
+            const captionInput = document.getElementById("captionInput");
+            if (fileInput.files && fileInput.files[0]) {
+                compressImage(fileInput.files[0], async function(url) {
+                    memories.push({ img: url, text: captionInput.value || "ذكرى جميلة ❤️" });
+                    await updateRoomData({ memories: memories });
+                    currentIndex = memories.length - 1;
+                    showSlide(currentIndex);
+                    fileInput.value = ""; captionInput.value = "";
+                    alert("تمت الإضافة بنجاح! 🎉");
+                });
+            } else {
+                alert("اختار صورة الأول! 📸");
+            }
+        }
+
+        window.deleteCurrentMemory = async function() {
+            if (memories.length === 0) return;
+            if (confirm("متأكد من حذف الصورة؟")) {
+                memories.splice(currentIndex, 1);
+                if (currentIndex >= memories.length) currentIndex = Math.max(0, memories.length - 1);
+                await updateRoomData({ memories: memories });
+                showSlide(currentIndex);
+            }
+        }
+
+        const wishNoteInput = document.getElementById("wishNoteInput");
+        window.saveWishNote = async function() {
+            await updateRoomData({ wishes: wishNoteInput.value });
+            alert("تم حفظ القائمة! 💾✨");
+        }
+
+        window.sendChatMessage = async function() {
+            const msg = document.getElementById("chatMessageInput").value.trim();
+            if(!msg) return;
+
+            chatMessages.push({ sender: currentUserName, text: msg });
+            await updateRoomData({ chats: chatMessages });
+            document.getElementById("chatMessageInput").value = "";
+        }
+
+        window.deleteChatMessage = async function(index) {
+            chatMessages.splice(index, 1);
+            await updateRoomData({ chats: chatMessages });
+        }
+
+        window.clearAllChat = async function() {
+            if(confirm("متأكد من مسح كل محادثة الشات؟")) {
+                chatMessages = [];
+                await updateRoomData({ chats: chatMessages });
+            }
+        }
+
+        function renderChat() {
+            const chatContainer = document.getElementById("chatContainer");
+            chatContainer.innerHTML = "";
+            if(chatMessages.length === 0) {
+                chatContainer.innerHTML = '<div class="chat-msg"><span>لا توجد رسائل بعد، ابدأ الكلام الآن ❤️</span></div>';
+                return;
+            }
+            chatMessages.forEach((m, index) => {
+                const div = document.createElement("div");
+                div.className = "chat-msg";
+                div.innerHTML = `<span><b>${m.sender}:</b> ${m.text}</span> <button class="msg-del-btn" onclick="deleteChatMessage(${index})">حذف</button>`;
+                chatContainer.appendChild(div);
+            });
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>
